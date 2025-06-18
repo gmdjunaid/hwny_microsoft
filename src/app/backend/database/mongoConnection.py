@@ -8,6 +8,7 @@ companyInfo = db["companyData"]
 
 companyInfo.insert_one({
     "companyName": "IBM",
+    "industry": "Technology",
     "revenue": 3600000000,
     "burnRate": 50000,
     "topExpenses": ["Rent", "Salaries", "Marketing"],
@@ -17,6 +18,7 @@ companyInfo.insert_one({
 
 
 # Company Name
+# Industry
 # Total Revenue
 # Burn Rate
 # Top 3 Expenses

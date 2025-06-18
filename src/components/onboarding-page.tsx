@@ -241,7 +241,7 @@ export default function OnboardingPage() {
                       <h2 className="text-3xl font-bold text-white mb-2">Tell us about your company</h2>
                       <p className="text-gray-400">We&apos;ll use this information to customize your financial dashboard.</p>
                     </div>
-                
+
                     <div className="space-y-6">
                       <div>
                         <label className="block text-sm font-medium text-white mb-2">Company Name</label>
@@ -458,9 +458,9 @@ export default function OnboardingPage() {
               <Button
                 className="bg-white text-black hover:bg-gray-100"
                 onClick={() => {
-                  // Handle form submission
+                  // Handle form submission and redirect to dashboard
                   console.log("Form submitted:", formData)
-                  alert("Dashboard creation started! You'll receive an email when it's ready.")
+                  window.location.href = "/dashboard"
                 }}
               >
                 Create My Dashboard

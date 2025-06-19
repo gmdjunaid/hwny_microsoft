@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,127 +21,12 @@ import {
   Bell,
   Download,
   RefreshCw,
-  Brain,
 } from "lucide-react";
-
-// Types for API data
-interface StockData {
-  ticker: string;
-  company_name: string;
-  price: number;
-  previous_close: number;
-  change_percent: number;
-  volume: number;
-  market_cap: number;
-  sector: string;
-  industry: string;
-  timestamp: string;
-  ai_analysis?: {
-    sentiment: "bullish" | "bearish" | "neutral";
-    confidence_score: number;
-    key_insights: string[];
-    recommendation: "buy" | "sell" | "hold";
-    risk_level: "low" | "medium" | "high";
-    price_target: number | null;
-    reasoning: string;
-  };
-}
-
-interface NewsArticle {
-  title: string;
-  content: string;
-  url: string;
-  published_date: string;
-  source: string;
-  sentiment?: string;
-  ai_summary?: string;
-}
-
-interface MarketInsights {
-  bullish_stocks: Array<{
-    ticker: string;
-    confidence: number;
-    reasoning: string;
-  }>;
-  bearish_stocks: Array<{
-    ticker: string;
-    confidence: number;
-    reasoning: string;
-  }>;
-  high_confidence_recommendations: Array<{
-    ticker: string;
-    recommendation: string;
-    confidence: number;
-  }>;
-  risk_analysis: { low: string[]; medium: string[]; high: string[] };
-}
-
-const API_BASE_URL = "http://localhost:8000";
 
 export default function DashboardPage() {
   const [timeRange, setTimeRange] = useState("12M");
-  const [stockData, setStockData] = useState<StockData[]>([]);
-  const [newsData, setNewsData] = useState<NewsArticle[]>([]);
-  const [insights, setInsights] = useState<MarketInsights | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState<string>("");
 
-  // Fetch stock data from backend
-  const fetchStockData = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/stocks`);
-      if (response.ok) {
-        const data = await response.json();
-        setStockData(data);
-        setLastUpdate(new Date().toLocaleTimeString());
-      }
-    } catch (error) {
-      console.error("Failed to fetch stock data:", error);
-    }
-  };
-
-  // Fetch news data from backend
-  const fetchNewsData = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/news`);
-      if (response.ok) {
-        const data = await response.json();
-        setNewsData(data.slice(0, 6)); // Show latest 6 news articles
-      }
-    } catch (error) {
-      console.error("Failed to fetch news data:", error);
-    }
-  };
-
-  // Fetch market insights from backend
-  const fetchInsights = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/insights`);
-      if (response.ok) {
-        const data = await response.json();
-        setInsights(data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch insights:", error);
-    }
-  };
-
-  // Refresh all data
-  const refreshData = async () => {
-    setLoading(true);
-    await Promise.all([fetchStockData(), fetchNewsData(), fetchInsights()]);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    refreshData();
-
-    // Refresh data every 60 seconds
-    const interval = setInterval(refreshData, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Mock data for financial metrics (keeping as is since this would come from user's uploaded documents)
+  // Mock data
   const financialMetrics = {
     totalRevenue: { value: 2450000, change: 12.5, period: "YTD" },
     burnRate: { value: 185000, change: -8.2, period: "Monthly" },
@@ -190,32 +75,60 @@ export default function DashboardPage() {
     },
   ];
 
-  // Helper functions
-  const formatMarketCap = (marketCap: number) => {
-    if (marketCap > 1e12) return `$${(marketCap / 1e12).toFixed(1)}T`;
-    if (marketCap > 1e9) return `$${(marketCap / 1e9).toFixed(1)}B`;
-    if (marketCap > 1e6) return `$${(marketCap / 1e6).toFixed(1)}M`;
-    return `$${marketCap.toLocaleString()}`;
-  };
+  const competitorStocks = [
+    {
+      symbol: "PLTR",
+      name: "Palantir",
+      price: 18.45,
+      change: 2.3,
+      changePercent: 14.2,
+    },
+    {
+      symbol: "SNOW",
+      name: "Snowflake",
+      price: 165.23,
+      change: -3.2,
+      changePercent: -1.9,
+    },
+    {
+      symbol: "DDOG",
+      name: "Datadog",
+      price: 98.76,
+      change: 1.8,
+      changePercent: 1.9,
+    },
+    {
+      symbol: "MDB",
+      name: "MongoDB",
+      price: 387.45,
+      change: 8.9,
+      changePercent: 2.4,
+    },
+  ];
 
-  const getSentimentColor = (sentiment: string) => {
-    switch (sentiment?.toLowerCase()) {
-      case "positive":
-      case "bullish":
-        return "border-green-500/50 text-green-400";
-      case "negative":
-      case "bearish":
-        return "border-red-500/50 text-red-400";
-      default:
-        return "border-gray-500/50 text-gray-400";
-    }
-  };
-
-  const getSentimentFromAI = (analysis: any) => {
-    if (analysis?.sentiment === "bullish") return "positive";
-    if (analysis?.sentiment === "bearish") return "negative";
-    return "neutral";
-  };
+  const industryNews = [
+    {
+      id: 1,
+      title: "AI Analytics Market Expected to Reach $50B by 2025",
+      source: "TechCrunch",
+      time: "2h ago",
+      sentiment: "positive",
+    },
+    {
+      id: 2,
+      title: "New Data Privacy Regulations Impact SaaS Companies",
+      source: "Reuters",
+      time: "4h ago",
+      sentiment: "neutral",
+    },
+    {
+      id: 3,
+      title: "Enterprise Software Spending Increases 15% YoY",
+      source: "Bloomberg",
+      time: "6h ago",
+      sentiment: "positive",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -229,13 +142,6 @@ export default function DashboardPage() {
                   <span className="text-black font-bold text-sm">F</span>
                 </div>
                 <span className="text-xl font-bold">FinEx Dashboard</span>
-                <Badge
-                  variant="outline"
-                  className="border-blue-600 text-blue-400"
-                >
-                  <Brain className="w-3 h-3 mr-1" />
-                  AI-Powered
-                </Badge>
               </div>
               <div className="flex gap-2">
                 {["1M", "3M", "6M", "12M", "YTD"].map((range) => (
@@ -256,9 +162,6 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="text-sm text-gray-400">
-                Last updated: {lastUpdate || "Never"}
-              </div>
               <Button
                 variant="outline"
                 size="sm"
@@ -271,12 +174,8 @@ export default function DashboardPage() {
                 variant="outline"
                 size="sm"
                 className="border-gray-600 hover:bg-white/5 text-white"
-                onClick={refreshData}
-                disabled={loading}
               >
-                <RefreshCw
-                  className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}
-                />
+                <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh
               </Button>
               <div className="relative">
@@ -289,58 +188,6 @@ export default function DashboardPage() {
       </div>
 
       <div className="container mx-auto px-6 py-8">
-        {/* AI Market Insights Banner */}
-        {insights && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-8"
-          >
-            <Card className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-purple-800">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Brain className="w-6 h-6 text-purple-400" />
-                  <h3 className="text-xl font-bold text-white">
-                    AI Market Intelligence
-                  </h3>
-                </div>
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-purple-300 text-sm mb-2">
-                      Bullish Signals
-                    </p>
-                    <p className="text-white text-2xl font-bold">
-                      {insights.bullish_stocks.length}
-                    </p>
-                    <p className="text-gray-400 text-sm">
-                      High-confidence opportunities
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-red-300 text-sm mb-2">Risk Alerts</p>
-                    <p className="text-white text-2xl font-bold">
-                      {insights.bearish_stocks.length}
-                    </p>
-                    <p className="text-gray-400 text-sm">Stocks to watch</p>
-                  </div>
-                  <div>
-                    <p className="text-blue-300 text-sm mb-2">
-                      AI Recommendations
-                    </p>
-                    <p className="text-white text-2xl font-bold">
-                      {insights.high_confidence_recommendations.length}
-                    </p>
-                    <p className="text-gray-400 text-sm">
-                      High-confidence calls
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
         {/* Key Metrics Row */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <motion.div
@@ -653,7 +500,7 @@ export default function DashboardPage() {
             </Card>
           </motion.div>
 
-          {/* Real-time Competitor Stocks with AI Analysis */}
+          {/* Competitor Stocks */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -663,103 +510,58 @@ export default function DashboardPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Activity className="w-5 h-5" />
-                  Live Stock Analysis
-                  <Badge
-                    variant="outline"
-                    className="border-green-600 text-green-400"
-                  >
-                    <Brain className="w-3 h-3 mr-1" />
-                    AI
-                  </Badge>
+                  Competitor Stocks
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {loading && stockData.length === 0 ? (
-                  <div className="flex items-center justify-center py-8">
-                    <RefreshCw className="w-6 h-6 animate-spin text-blue-400" />
-                    <span className="ml-2 text-gray-400">
-                      Loading stock data...
-                    </span>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {stockData.slice(0, 4).map((stock) => (
-                      <div
-                        key={stock.ticker}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">
-                              {stock.ticker}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="text-white font-medium">
-                              {stock.company_name}
-                            </p>
-                            <div className="flex items-center gap-2">
-                              <p className="text-gray-400 text-sm">
-                                {stock.ticker}
-                              </p>
-                              {stock.ai_analysis && (
-                                <Badge
-                                  variant="outline"
-                                  className={`text-xs ${
-                                    stock.ai_analysis.sentiment === "bullish"
-                                      ? "border-green-500/50 text-green-400"
-                                      : stock.ai_analysis.sentiment ===
-                                        "bearish"
-                                      ? "border-red-500/50 text-red-400"
-                                      : "border-gray-500/50 text-gray-400"
-                                  }`}
-                                >
-                                  {stock.ai_analysis.recommendation.toUpperCase()}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
+                <div className="space-y-4">
+                  {competitorStocks.map((stock) => (
+                    <div
+                      key={stock.symbol}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">
+                            {stock.symbol}
+                          </span>
                         </div>
-                        <div className="text-right">
-                          <p className="text-white font-medium">
-                            ${stock.price.toFixed(2)}
+                        <div>
+                          <p className="text-white font-medium">{stock.name}</p>
+                          <p className="text-gray-400 text-sm">
+                            {stock.symbol}
                           </p>
-                          <div className="flex items-center gap-1">
-                            {stock.change_percent > 0 ? (
-                              <TrendingUp className="w-3 h-3 text-green-400" />
-                            ) : (
-                              <TrendingDown className="w-3 h-3 text-red-400" />
-                            )}
-                            <span
-                              className={`text-sm ${
-                                stock.change_percent > 0
-                                  ? "text-green-400"
-                                  : "text-red-400"
-                              }`}
-                            >
-                              {stock.change_percent > 0 ? "+" : ""}
-                              {stock.change_percent.toFixed(2)}%
-                            </span>
-                          </div>
-                          {stock.ai_analysis && (
-                            <div className="text-xs text-gray-400">
-                              {(
-                                stock.ai_analysis.confidence_score * 100
-                              ).toFixed(0)}
-                              % confidence
-                            </div>
-                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
+                      <div className="text-right">
+                        <p className="text-white font-medium">${stock.price}</p>
+                        <div className="flex items-center gap-1">
+                          {stock.changePercent > 0 ? (
+                            <TrendingUp className="w-3 h-3 text-green-400" />
+                          ) : (
+                            <TrendingDown className="w-3 h-3 text-red-400" />
+                          )}
+                          <span
+                            className={`text-sm ${
+                              stock.changePercent > 0
+                                ? "text-green-400"
+                                : "text-red-400"
+                            }`}
+                          >
+                            {stock.changePercent > 0 ? "+" : ""}
+                            {stock.changePercent}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
         </div>
 
-        {/* Real-time Industry News with AI Analysis */}
+        {/* Industry News */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -769,71 +571,49 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
                 <Building2 className="w-5 h-5" />
-                Live Financial News
-                <Badge
-                  variant="outline"
-                  className="border-blue-600 text-blue-400"
-                >
-                  <Brain className="w-3 h-3 mr-1" />
-                  AI Analyzed
-                </Badge>
+                Industry News & Analysis
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {loading && newsData.length === 0 ? (
-                <div className="flex items-center justify-center py-8">
-                  <RefreshCw className="w-6 h-6 animate-spin text-blue-400" />
-                  <span className="ml-2 text-gray-400">
-                    Loading news data...
-                  </span>
-                </div>
-              ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {newsData.map((news, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-800/50 rounded-lg p-4 space-y-3"
-                    >
-                      <div className="flex items-start justify-between">
-                        <Badge
-                          variant="outline"
-                          className={getSentimentColor(
-                            news.sentiment || getSentimentFromAI(news)
-                          )}
-                        >
-                          {news.sentiment ||
-                            getSentimentFromAI(news) ||
-                            "neutral"}
-                        </Badge>
-                        <span className="text-gray-500 text-xs">
-                          {new Date(news.published_date).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <h4 className="text-white font-medium text-sm leading-tight line-clamp-2">
-                        {news.title}
-                      </h4>
-                      {news.ai_summary && (
-                        <p className="text-gray-400 text-xs line-clamp-2">
-                          {news.ai_summary}
-                        </p>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-400 text-xs">
-                          {news.source}
-                        </span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-gray-400 hover:text-white"
-                          onClick={() => window.open(news.url, "_blank")}
-                        >
-                          <ExternalLink className="w-3 h-3" />
-                        </Button>
-                      </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                {industryNews.map((news) => (
+                  <div
+                    key={news.id}
+                    className="bg-gray-800/50 rounded-lg p-4 space-y-3"
+                  >
+                    <div className="flex items-start justify-between">
+                      <Badge
+                        variant="outline"
+                        className={`${
+                          news.sentiment === "positive"
+                            ? "border-green-500/50 text-green-400"
+                            : news.sentiment === "negative"
+                            ? "border-red-500/50 text-red-400"
+                            : "border-gray-500/50 text-gray-400"
+                        }`}
+                      >
+                        {news.sentiment}
+                      </Badge>
+                      <span className="text-gray-500 text-xs">{news.time}</span>
                     </div>
-                  ))}
-                </div>
-              )}
+                    <h4 className="text-white font-medium text-sm leading-tight">
+                      {news.title}
+                    </h4>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400 text-xs">
+                        {news.source}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-gray-400 hover:text-white"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </motion.div>

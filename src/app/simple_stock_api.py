@@ -285,6 +285,135 @@ async def get_market_insights():
     
     return insights
 
+@app.get("/news")
+async def get_financial_news():
+    """Get latest financial news for tracked stocks"""
+    import csv
+    import os
+    import yfinance as yf
+    from datetime import datetime, timedelta
+    import random
+    
+    news_data = []
+    
+    # Return ticker-specific sample news directly for now
+    sample_news_by_ticker = {
+        "JPM": [
+            {
+                "title": "(JPM) JPMorgan Chase Reports Strong Q4 Earnings Beat",
+                "content": "JPMorgan Chase & Co. reported stronger-than-expected fourth-quarter earnings driven by robust trading revenues and loan growth.",
+                "url": "https://example.com/jpm-earnings",
+                "published_date": "2024-01-15",
+                "source": "Reuters",
+                "sentiment": "positive",
+                "ai_summary": "JPMorgan's strong quarterly performance demonstrates resilient banking fundamentals and trading strength.",
+                "ticker": "JPM",
+                "company": "JPMorgan Chase & Co."
+            }
+        ],
+        "AAPL": [
+            {
+                "title": "(AAPL) Apple iPhone Sales Show Resilience in China Market",
+                "content": "Apple Inc. iPhone sales demonstrate continued strength in the Chinese market despite economic headwinds.",
+                "url": "https://example.com/aapl-china",
+                "published_date": "2024-01-14",
+                "source": "Bloomberg",
+                "sentiment": "positive",
+                "ai_summary": "Apple's Chinese market performance indicates strong product demand and brand loyalty in key region.",
+                "ticker": "AAPL", 
+                "company": "Apple Inc."
+            }
+        ],
+        "MSFT": [
+            {
+                "title": "(MSFT) Microsoft Azure Cloud Revenue Surges 30% Year-over-Year",
+                "content": "Microsoft Corporation's Azure cloud computing division continues rapid growth with enterprise customer adoption.",
+                "url": "https://example.com/msft-azure",
+                "published_date": "2024-01-13",
+                "source": "TechCrunch",
+                "sentiment": "positive",
+                "ai_summary": "Microsoft's cloud business shows exceptional growth momentum in competitive enterprise market.",
+                "ticker": "MSFT",
+                "company": "Microsoft Corporation"
+            }
+        ],
+        "GOOGL": [
+            {
+                "title": "(GOOGL) Alphabet AI Investments Drive Search Innovation",
+                "content": "Alphabet Inc. announces significant AI investments to enhance Google Search capabilities and user experience.",
+                "url": "https://example.com/googl-ai",
+                "published_date": "2024-01-12",
+                "source": "The Verge",
+                "sentiment": "positive",
+                "ai_summary": "Alphabet's AI strategy positions Google for continued search market leadership and innovation.",
+                "ticker": "GOOGL",
+                "company": "Alphabet Inc."
+            }
+        ],
+        "TSLA": [
+            {
+                "title": "(TSLA) Tesla Deliveries Beat Expectations Despite Production Challenges",
+                "content": "Tesla Inc. reported higher-than-expected vehicle deliveries for the quarter, overcoming manufacturing obstacles.",
+                "url": "https://example.com/tsla-deliveries",
+                "published_date": "2024-01-11",
+                "source": "Automotive News",
+                "sentiment": "positive",
+                "ai_summary": "Tesla's delivery performance demonstrates operational resilience and strong demand for electric vehicles.",
+                "ticker": "TSLA",
+                "company": "Tesla, Inc."
+            }
+        ],
+        "AMZN": [
+            {
+                "title": "(AMZN) Amazon Web Services Expands Global Infrastructure",
+                "content": "Amazon.com Inc. announces major AWS infrastructure expansion to support growing cloud computing demand.",
+                "url": "https://example.com/amzn-aws",
+                "published_date": "2024-01-10",
+                "source": "AWS Blog",
+                "sentiment": "positive",
+                "ai_summary": "Amazon's infrastructure investment reinforces AWS market leadership in cloud services sector.",
+                "ticker": "AMZN",
+                "company": "Amazon.com, Inc."
+            }
+        ],
+        "META": [
+            {
+                "title": "(META) Meta Platforms Advances in Virtual Reality Technology",
+                "content": "Meta Platforms Inc. unveils new VR capabilities as part of metaverse development strategy.",
+                "url": "https://example.com/meta-vr",
+                "published_date": "2024-01-09",
+                "source": "VR World",
+                "sentiment": "positive", 
+                "ai_summary": "Meta's VR innovations demonstrate commitment to metaverse vision and technology leadership.",
+                "ticker": "META",
+                "company": "Meta Platforms, Inc."
+            }
+        ],
+        "NFLX": [
+            {
+                "title": "(NFLX) Netflix Subscriber Growth Exceeds Forecasts Globally",
+                "content": "Netflix Inc. reports stronger-than-expected subscriber additions across international markets.",
+                "url": "https://example.com/nflx-subs",
+                "published_date": "2024-01-08",
+                "source": "Entertainment Weekly",
+                "sentiment": "positive",
+                "ai_summary": "Netflix's subscriber growth indicates successful content strategy and global market expansion.",
+                "ticker": "NFLX",
+                "company": "Netflix, Inc."
+            }
+        ]
+    }
+    
+    # Add sample news for all tracked tickers
+    for ticker in [company["ticker"] for company in COMPANIES_TO_TRACK]:
+        if ticker in sample_news_by_ticker:
+            news_data.extend(sample_news_by_ticker[ticker])
+    
+    # Sort by date (most recent first) and limit to 12 articles
+    news_data = sorted(news_data, key=lambda x: x.get('published_date', ''), reverse=True)[:12]
+    
+    return news_data
+
 @app.get("/")
 async def root():
     """API root endpoint"""
@@ -297,6 +426,7 @@ async def root():
             "GET /stocks/{ticker}": "Specific stock data",
             "GET /analysis/{ticker}": "AI analysis for specific stock",
             "GET /insights": "AI-powered market insights",
+            "GET /news": "Latest financial news",
             "GET /health": "API health check",
             "GET /performance": "Performance summary",
             "GET /refresh": "Force refresh data",

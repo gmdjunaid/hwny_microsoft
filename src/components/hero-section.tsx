@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { SplineScene } from "@/components/ui/spline"
-import { Spotlight } from "@/components/ui/spotlight"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Upload, Brain } from "lucide-react"
-import Link from "next/link"
+import { motion } from "framer-motion";
+import { SplineScene } from "@/components/ui/spline";
+import { Spotlight } from "@/components/ui/spotlight";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Upload, Brain } from "lucide-react";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -18,7 +18,12 @@ export default function HeroSection() {
       <div className="absolute inset-0 opacity-5">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="diagonal" patternUnits="userSpaceOnUse" width="60" height="60">
+            <pattern
+              id="diagonal"
+              patternUnits="userSpaceOnUse"
+              width="60"
+              height="60"
+            >
               <path d="M0,60 L60,0" stroke="#ffffff" strokeWidth="0.5" />
             </pattern>
           </defs>
@@ -26,7 +31,10 @@ export default function HeroSection() {
         </svg>
       </div>
 
-      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+      <Spotlight
+        className="-top-40 left-0 md:left-60 md:-top-20"
+        fill="white"
+      />
 
       <div className="w-full relative z-10">
         <div className="grid lg:grid-cols-5 min-h-screen">
@@ -38,7 +46,10 @@ export default function HeroSection() {
             transition={{ duration: 0.8 }}
           >
             <div className="max-w-xl space-y-8">
-              <Badge variant="outline" className="border-gray-600 text-gray-300 w-fit">
+              <Badge
+                variant="outline"
+                className="border-gray-600 text-gray-300 w-fit"
+              >
                 <Brain className="w-4 h-4 mr-2" />
                 AI-Powered Financial Intelligence
               </Badge>
@@ -49,13 +60,17 @@ export default function HeroSection() {
               </h1>
 
               <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
-                Upload your business documents and FinEx builds an intelligent control panel — including live competitor
-                tracking, SEC changes, and budget breakdowns.
+                Upload your business documents and FinEx builds an intelligent
+                control panel — including live competitor tracking, SEC changes,
+                and budget breakdowns.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/onboarding">
-                  <Button size="lg" className="bg-white text-black hover:bg-gray-100">
+                  <Button
+                    size="lg"
+                    className="bg-white text-black hover:bg-gray-100"
+                  >
                     <Upload className="w-5 h-5 mr-2" />
                     Upload Financials
                   </Button>
@@ -81,7 +96,9 @@ export default function HeroSection() {
               {/* FinEx Company Name above robot */}
               <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10 pointer-events-none">
                 <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg px-6 py-3">
-                  <span className="text-white text-2xl font-bold tracking-wide">FinEx</span>
+                  <span className="text-white text-2xl font-bold tracking-wide">
+                    FinEx
+                  </span>
                 </div>
               </div>
 
@@ -90,12 +107,16 @@ export default function HeroSection() {
                 <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg px-4 py-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-white text-sm font-medium">Live Processing</span>
+                    <span className="text-white text-sm font-medium">
+                      Live Processing
+                    </span>
                   </div>
                 </div>
 
                 <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg px-4 py-2">
-                  <span className="text-gray-300 text-sm font-mono">FinEx AI</span>
+                  <span className="text-gray-300 text-sm font-mono">
+                    FinEx AI
+                  </span>
                 </div>
               </div>
             </div>
@@ -118,5 +139,5 @@ export default function HeroSection() {
         </div>
       </motion.div>
     </section>
-  )
+  );
 }

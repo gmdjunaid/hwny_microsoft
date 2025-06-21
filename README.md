@@ -6,6 +6,7 @@ Finex is a smart financial dashboard platform that transforms your uploaded busi
 ![image](https://github.com/user-attachments/assets/fe77c34c-65a1-4369-991e-af85523e06ae)
 
 <br>
+
 ## Contributors
 
 Orland @reb0und - Backend Developer, Junior at Rutgers

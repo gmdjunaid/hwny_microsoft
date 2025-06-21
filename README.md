@@ -14,7 +14,8 @@ Finex is a smart financial dashboard platform that transforms your uploaded busi
 - Saaim [@saaimk1](https://github.com/saaimk1) - Data Engineer, Junior at Rutgers
 - Rayaan [@rafzal2020](https://github.com/rafzal2020) - Software Developer, Junior at Rutgers
 - Vraj [@vrajpatel1227](https://github.com/vrajpatel1227) - Software Developer, Senior at Stevens
-  
+
+
 <br>
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

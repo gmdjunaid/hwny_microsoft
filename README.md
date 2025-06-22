@@ -9,11 +9,11 @@ Finex is a smart financial dashboard platform that transforms your uploaded busi
 
 ## Contributors
 
-- Orland [@lander-geronimo](https://github.com/lander-geronimo) -  Backend Developer, Junior at Rutgers
 - Junaid [@gmdjunaid](https://github.com/gmdjunaid) - Software Developer, Junior at Rutgers
 - Saaim [@saaimk1](https://github.com/saaimk1) - Data Engineer, Junior at Rutgers
 - Rayaan [@rafzal2020](https://github.com/rafzal2020) - Software Developer, Junior at Rutgers
 - Vraj [@vrajpatel1227](https://github.com/vrajpatel1227) - Software Developer, Senior at Stevens
+- Orland [@lander-geronimo](https://github.com/lander-geronimo) -  Software Developer, Junior at Rutgers
 
 
 <br>

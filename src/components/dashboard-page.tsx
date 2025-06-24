@@ -211,9 +211,10 @@ export default function DashboardPage() {
     }
   };
 
-  const getSentimentFromAI = (analysis: any) => {
-    if (analysis?.sentiment === "bullish") return "positive";
-    if (analysis?.sentiment === "bearish") return "negative";
+  const getSentimentFromAI = (news: NewsArticle) => {
+    // For news articles, we use the sentiment field directly
+    if (news.sentiment === "positive" || news.sentiment === "bullish") return "positive";
+    if (news.sentiment === "negative" || news.sentiment === "bearish") return "negative";
     return "neutral";
   };
 
@@ -740,6 +741,9 @@ export default function DashboardPage() {
                               {stock.change_percent > 0 ? "+" : ""}
                               {stock.change_percent.toFixed(2)}%
                             </span>
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            {formatMarketCap(stock.market_cap)}
                           </div>
                           {stock.ai_analysis && (
                             <div className="text-xs text-gray-400">

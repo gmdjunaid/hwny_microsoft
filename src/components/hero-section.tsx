@@ -104,27 +104,30 @@ export default function HeroSection() {
 
               {/* Subtle overlay elements for context */}
               <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-10 pointer-events-none">
+                {/*
                 <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg px-4 py-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                     <span className="text-white text-sm font-medium">
-                      Live Processing
                     </span>
                   </div>
                 </div>
+                */}
 
+                {/*
                 <div className="bg-black/40 backdrop-blur-sm border border-gray-700/50 rounded-lg px-4 py-2">
                   <span className="text-gray-300 text-sm font-mono">
                     FinEx AI
                   </span>
                 </div>
+                */}
               </div>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator
       <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
         initial={{ opacity: 0, y: 20 }}
@@ -132,12 +135,12 @@ export default function HeroSection() {
         transition={{ duration: 0.8, delay: 1 }}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-gray-400 text-sm">Scroll to explore</span>
+          <span className="text-gray-400 text-sm"></span>
           <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-bounce" />
           </div>
         </div>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 }
